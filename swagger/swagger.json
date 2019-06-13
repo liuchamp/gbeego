@@ -1,0 +1,208 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego Test API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "astaxie@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "basePath": "/api",
+    "paths": {
+        "/captcha/": {
+            "get": {
+                "tags": [
+                    "captcha"
+                ],
+                "description": "Get New Verification code",
+                "operationId": "CaptchaController.Get",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.VerCode"
+                        }
+                    },
+                    "503": {
+                        "description": ": service error"
+                    }
+                }
+            }
+        },
+        "/user/info": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "description": "find user info by id",
+                "operationId": "UserController.Get",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "userId",
+                        "description": "the userid you want to get",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.UserDTO"
+                        }
+                    },
+                    "403": {
+                        "description": "userId is empty"
+                    }
+                }
+            }
+        },
+        "/user/moveMoney": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "Transfer operation interface",
+                "operationId": "UserController.Transfer",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The transfer DTO content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TransferDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    },
+                    "405": {
+                        "description": "operation failed"
+                    },
+                    "500": {
+                        "description": "inner error"
+                    }
+                }
+            }
+        },
+        "/user/reg": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "Registered a user",
+                "operationId": "UserController.registered",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The Registered DTO content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.RegisteredDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    },
+                    "406": {
+                        "description": "operation failed, MS code expired or not exist"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Object": {
+            "title": "Object",
+            "type": "object",
+            "properties": {
+                "ObjectId": {
+                    "type": "string"
+                },
+                "PlayerName": {
+                    "type": "string"
+                },
+                "Score": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "models.RegisteredDTO": {
+            "title": "RegisteredDTO",
+            "type": "object",
+            "properties": {
+                "smsCode": {
+                    "type": "string"
+                },
+                "userPhone": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.TransferDTO": {
+            "title": "TransferDTO",
+            "type": "object",
+            "properties": {
+                "formUserId": {
+                    "type": "string"
+                },
+                "money": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "toUserId": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UserDTO": {
+            "title": "UserDTO",
+            "type": "object",
+            "properties": {
+                "userId": {
+                    "type": "string"
+                },
+                "userMoney": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.VerCode": {
+            "title": "VerCode",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "time": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        }
+    }
+}
